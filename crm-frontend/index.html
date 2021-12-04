@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillbox - CRM</title>
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script defer src="/script/script.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <div class="container header__container">
+      <a class="header__link" href="">
+        <img class="header__logo" src="/icons/logo.svg" alt="Логотип Skillbox">
+      </a>
+      <input class="header__input" type="text" placeholder="Введите запрос">
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="clients">
+      <div class="container clients__container">
+        <h1 class="clients__heading">
+          Клиенты
+        </h1>
+        <div class="table-wrapper">
+          <table class="table-content">
+            <thead>
+              <tr class="heading__tr">
+                <th class="heading__td">
+                  <button id="id-btn" class="th__btn">
+                    ID
+                    <svg class="btn-svg" width="12" height="12" viewbox="0 0 12 12" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z"
+                        fill="#9873FF" />
+                    </svg>
+                  </button>
+                </th>
+                <th class="heading__td">
+                  <button id="fio-btn" class="th__btn">
+                    Фамилия Имя Отчество
+                    <svg class="btn-svg" width="12" height="12" viewbox="0 0 12 12" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z"
+                        fill="#9873FF" />
+                    </svg>
+                    <span class="btn__text">
+                      А-Я
+                    </span>
+                  </button>
+                </th>
+                <th class="heading__td">
+                  <button id="creation-time-btn" class="th__btn">
+                    Дата и время создания
+                    <svg class="btn-svg" width="12" height="12" viewbox="0 0 12 12" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z"
+                        fill="#9873FF" />
+                    </svg>
+                  </button>
+                </th>
+                <th class="heading__td">
+                  <button id="changes-time-btn" class="th__btn">
+                    Последние изменения
+                    <svg class="btn-svg" width="12" height="12" viewbox="0 0 12 12" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <path d="M10 6L9.295 5.295L6.5 8.085L6.5 2H5.5L5.5 8.085L2.71 5.29L2 6L6 10L10 6Z"
+                        fill="#9873FF" />
+                    </svg>
+                  </button>
+                </th>
+                <th class="heading__td">
+                  <span class="th__span">
+                    Контакты
+                  </span>
+                </th>
+                <th class="heading__td">
+                  <span class="th__span">
+                    Действия
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="tbody">
+
+              <tr class="content__tr">
+                <td class="content__td td-id">
+                  12345
+                </td>
+                <td class="content__td">
+                  Константинопольская Людмила Александровна
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    12:41
+                  </span>
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    14:50
+                  </span>
+                </td>
+                <td class="content__td td-contacts">
+                  <div class="facebook-svg"></div>
+                  <div class="vk-svg"></div>
+                  <div class="mail-svg"></div>
+                  <div class="phone-svg"></div>
+                  <div class="abstract-svg"></div>
+                </td>
+                <td class="content__td td-action">
+                  <button class="action_button edit">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M2 11.5V14H4.5L11.8733 6.62662L9.37333 4.12662L2 11.5ZM13.8067 4.69329C14.0667 4.43329 14.0667 4.01329 13.8067 3.75329L12.2467 2.19329C11.9867 1.93329 11.5667 1.93329 11.3067 2.19329L10.0867 3.41329L12.5867 5.91329L13.8067 4.69329Z"
+                          fill="#9873FF" />
+                      </g>
+                    </svg>
+                    Изменить
+                  </button>
+                  <button class="action_button delete">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z"
+                          fill="#F06A4D" />
+                      </g>
+                    </svg>
+                    Удалить
+                  </button>
+                </td>
+              </tr>
+
+
+              <tr class="content__tr">
+                <td class="content__td td-id">
+                  12345
+                </td>
+                <td class="content__td">
+                  Константинопольская Людмила Александровна
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    12:41
+                  </span>
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    14:50
+                  </span>
+                </td>
+                <td class="content__td">
+                  <div class="facebook-svg"></div>
+                  <div class="vk-svg"></div>
+                  <div class="mail-svg"></div>
+                  <div class="phone-svg"></div>
+                  <div class="abstract-svg"></div>
+                </td>
+                <td class="content__td td-action">
+                  <button class="action_button edit">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M2 11.5V14H4.5L11.8733 6.62662L9.37333 4.12662L2 11.5ZM13.8067 4.69329C14.0667 4.43329 14.0667 4.01329 13.8067 3.75329L12.2467 2.19329C11.9867 1.93329 11.5667 1.93329 11.3067 2.19329L10.0867 3.41329L12.5867 5.91329L13.8067 4.69329Z"
+                          fill="#9873FF" />
+                      </g>
+                    </svg>
+                    Изменить
+                  </button>
+                  <button class="action_button delete">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z"
+                          fill="#F06A4D" />
+                      </g>
+                    </svg>
+                    Удалить
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="content__tr">
+                <td class="content__td td-id">
+                  12345
+                </td>
+                <td class="content__td">
+                  Константинопольская Людмила Александровна
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    12:41
+                  </span>
+                </td>
+                <td class="content__td">
+                  21.02.2021
+                  <span class="grey-text">
+                    14:50
+                  </span>
+                </td>
+                <td class="content__td">
+                  <div class="facebook-svg"></div>
+                  <div class="vk-svg"></div>
+                  <div class="mail-svg"></div>
+                  <div class="phone-svg"></div>
+                  <div class="abstract-svg"></div>
+                </td>
+                <td class="content__td td-action">
+                  <button class="action_button edit">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M2 11.5V14H4.5L11.8733 6.62662L9.37333 4.12662L2 11.5ZM13.8067 4.69329C14.0667 4.43329 14.0667 4.01329 13.8067 3.75329L12.2467 2.19329C11.9867 1.93329 11.5667 1.93329 11.3067 2.19329L10.0867 3.41329L12.5867 5.91329L13.8067 4.69329Z"
+                          fill="#9873FF" />
+                      </g>
+                    </svg>
+                    Изменить
+                  </button>
+                  <button class="action_button delete">
+                    <svg class="action_svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <g opacity="0.7">
+                        <path
+                          d="M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z"
+                          fill="#F06A4D" />
+                      </g>
+                    </svg>
+                    Удалить
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="button-wrapper">
+          <button class="button-client">
+            <svg class="client-svg" width="23" height="16" viewbox="0 0 23 16" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z"
+                fill="#9873FF" />
+            </svg>
+            Добавить клиента
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal modal-edit">
+      <div class="modal__content">
+        <div class="content-wrapper">
+          <button class="modal__close-button"></button>
+          <div class="modal__title-wrapper">
+            <h2 class="modal__title">Изменить данные</h2>
+            <span class="modal__span">ID: 123458</span>
+          </div>
+          <form class="modal__form">
+            <label class="modal__label">
+              Фамилия<span class="modal__span_purple">*</span>
+              <input class="modal__input" type="text">
+            </label>
+            <label class="modal__label">
+              Имя<span class="modal__span_purple">*</span>
+              <input class="modal__input" type="text">
+            </label>
+            <label class="modal__label">
+              Отчество
+              <input class="modal__input" type="text">
+            </label>
+          </form>
+        </div>
+        <div class="wrapper-add-contact">
+          <button class="modal__add-contact add-contact">
+            <svg class="modal__svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z"
+                fill="#9873FF" />
+            </svg>
+            Добавить контакт
+          </button>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="save-button">
+            Сохранить
+          </button>
+          <button class="delete-button">
+            Удалить клиента
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal modal-add">
+      <div class="modal__content">
+        <div class="content-wrapper">
+          <button class="modal__close-button"></button>
+          <div class="modal__title-wrapper">
+            <h2 class="modal__title">Новый клиент</h2>
+          </div>
+          <form class="modal__form">
+            <label class="modal__label">
+              Фамилия<span class="modal__span_purple">*</span>
+              <input class="modal__input name-input-js" type="text">
+            </label>
+            <label class="modal__label">
+              Имя<span class="modal__span_purple">*</span>
+              <input class="modal__input surname-input-js" type="text">
+            </label>
+            <label class="modal__label">
+              Отчество
+              <input class="modal__input lastname-input-js" type="text">
+            </label>
+          </form>
+        </div>
+        <div class="wrapper-add-contact">
+          <button class="modal__add-contact add-contact">
+            <svg class="modal__svg" width="16" height="16" viewbox="0 0 16 16" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M8.00001 4.66659C7.63334 4.66659 7.33334 4.96659 7.33334 5.33325V7.33325H5.33334C4.96668 7.33325 4.66668 7.63325 4.66668 7.99992C4.66668 8.36659 4.96668 8.66659 5.33334 8.66659H7.33334V10.6666C7.33334 11.0333 7.63334 11.3333 8.00001 11.3333C8.36668 11.3333 8.66668 11.0333 8.66668 10.6666V8.66659H10.6667C11.0333 8.66659 11.3333 8.36659 11.3333 7.99992C11.3333 7.63325 11.0333 7.33325 10.6667 7.33325H8.66668V5.33325C8.66668 4.96659 8.36668 4.66659 8.00001 4.66659ZM8.00001 1.33325C4.32001 1.33325 1.33334 4.31992 1.33334 7.99992C1.33334 11.6799 4.32001 14.6666 8.00001 14.6666C11.68 14.6666 14.6667 11.6799 14.6667 7.99992C14.6667 4.31992 11.68 1.33325 8.00001 1.33325ZM8.00001 13.3333C5.06001 13.3333 2.66668 10.9399 2.66668 7.99992C2.66668 5.05992 5.06001 2.66659 8.00001 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 8.00001 13.3333Z"
+                fill="#9873FF" />
+            </svg>
+            Добавить контакт
+          </button>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="save-button">
+            Сохранить
+          </button>
+          <button class="cancel-button cancel-button-js">
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-delete" class="modal modal-delete">
+      <div class="modal__content delete-content">
+        <div class="content-wrapper">
+          <button class="modal__close-button"></button>
+          <div class="modal-delete__wrapper">
+            <h2 class="modal__title modal-delete__title">Удалить клиента</h2>
+            <span class="modal-delete__span">
+              Вы действительно хотите удалить данного клиента?
+            </span>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="save-button">
+            Удалить
+          </button>
+          <button class="cancel-button cancel-button-js">
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="edit-delete-modal" class="modal modal-delete">
+      <div class="modal__content delete-content">
+        <div class="content-wrapper">
+          <button class="modal__close-button"></button>
+          <div class="modal-delete__wrapper">
+            <h2 class="modal__title modal-delete__title">Удалить клиента</h2>
+            <span class="modal-delete__span">
+              Вы действительно хотите удалить данного клиента?
+            </span>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="save-button">
+            Удалить
+          </button>
+          <button id="edit-cancel-button" class="cancel-button">
+            Отмена
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+  <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+</body>
+
+</html>
