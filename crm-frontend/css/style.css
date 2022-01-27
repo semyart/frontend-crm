@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+*:focus {
+  outline: none;
+}
+
 a {
   text-decoration: none;
 }
@@ -53,16 +57,71 @@ body {
 
 .header__input {
   display: inline-block;
+  position: relative;
   padding: 12px 0 13px 16px;
   border: 1px solid rgba(51, 51, 51, 0.2);
   height: 44px;
-  width: calc(581 / 984 * 100%);
+  width: 100%;
 }
 
 .header__input::placeholder {
   color: #B0B0B0;
   font-weight: 400;
   font-size: 14px;
+}
+
+.header__input-wrapper {
+  position: relative;
+  width: calc(581 / 984 * 100%);
+}
+
+.header__search-results {
+  content: '';
+  position: absolute;
+  top: 44px;
+  left: 0;
+  right: 0;
+  padding: 5px 0;
+  max-height: 400px;
+  height: fit-content;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgba(51, 51, 51, 0.2);
+  border-top: 0px;
+  z-index: 2;
+  overflow-y: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s ease-in-out;
+}
+
+.header__search-results_active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.header__search-results-btn {
+  display: flex;
+  padding: 13px 20px;
+  max-width: 100%;
+  max-height: 50px;
+  border: 0;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background-color .3s ease-in-out;
+}
+
+.header__search-results-btn:hover {
+  background-color: #EEE;
+}
+
+.header__search-results-btn:focus {
+  background-color: #E5E5E5;
 }
 
 /* clients */
@@ -141,7 +200,8 @@ body {
 
 .tbody {
   display: block;
-  max-height: 304px;
+  position: relative;
+  height: 304px;
   overflow-y: auto;
 }
 
@@ -154,6 +214,7 @@ body {
   background-color: #fff;
   font-weight: 400;
   font-size: 14px;
+  transition: all .5s ease-in-out;
 }
 
 .content__tr {
@@ -268,15 +329,24 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: #9873FF;
+  cursor: pointer;
 }
 
 .action_button {
   display: flex;
-  align-items: center;
   padding: 0;
   border: none;
-  background-color: inherit;
+  background-color: transparent;
   cursor: pointer;
+  transition: .3s ease-in-out;
+}
+
+.edit:hover {
+  color: #9873FF;
+}
+
+.delete:hover {
+  color: #F06A4D;
 }
 
 .action_svg {
@@ -321,6 +391,25 @@ body {
   padding: 20px 0 30px;
   background: #fff;
   box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.15);
+}
+
+.modal__content::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(/icons/loading1.gif) center center no-repeat;
+  background-color: rgba(255, 255, 255, 0.8);
+  opacity: 0;
+  visibility: hidden;
+  transition: all .5s ease-in-out;
+}
+
+.modal__content._sending::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .content-wrapper {
@@ -391,6 +480,14 @@ body {
   color: #333;
   font-size: 14px;
   font-weight: 600;
+  transition: border-color .3s ease-in-out;
+}
+
+.error-message {
+  display: block;
+  margin-bottom: 1px;
+  font-size: 12px;
+  color: #F06A4D;
 }
 
 .modal__span_purple {
@@ -404,13 +501,14 @@ body {
   padding: 15px 0;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 25px;
+  margin-bottom: 10px;
   justify-content: center;
   background-color: rgba(200,197,209, 0.2);
 }
 
 .add-contact {
   display: flex;
+  position: relative;
   margin: 0 auto;
   width: fit-content;
   align-items: center;
@@ -420,10 +518,35 @@ body {
   font-weight: 600;
   color: #333;
   background: none;
+  cursor: pointer;
+  transition: color .3s ease-in-out;
+}
+
+.add-contact:hover {
+  color: #9873FF;
 }
 
 .modal__svg {
   margin-right: 4px;
+  transition: all .3s ease-in-out;
+}
+
+.add-contact:hover .modal__svg {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal__svg_hover {
+  position: absolute;
+  left: 6px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .3s ease-in-out;
+}
+
+.add-contact:hover .modal__svg_hover {
+  opacity: 1;
+  visibility: visible;
 }
 
 .button-wrapper {
@@ -437,12 +560,14 @@ body {
 
 .save-button {
   padding: 12.5px 35px;
+  margin-top: 10px;
   margin-bottom: 5px;
   background-color: #9873FF;
   color: #fff;
   font-size: 14px;
   font-weight: 600;
   border: none;
+  cursor: pointer;
 }
 
 .delete-button,
@@ -455,6 +580,7 @@ body {
   color: #333;
   text-decoration: underline;
   text-decoration-skip-ink: none;
+  cursor: pointer;
 }
 
 .contact-wrapper {
@@ -480,6 +606,7 @@ body {
   background-position-y: center;
   background-position-x: 95%;
   -webkit-appearance: none;
+  cursor: pointer;
 }
 
 .modal__select:focus {
@@ -492,10 +619,15 @@ body {
   height: 37px;
   background-color: rgba(200,197,209, 0.2);
   border: 1px solid #C8C5D1;
+  border-right: none;
   border-left: none;
   font-size: 14px;
   font-weight: 600;
   color: #333;
+}
+
+.modal__select ._error {
+  box-shadow: 0 0 3px #F06A4D;
 }
 
 .modal__contact-input::placeholder {
@@ -515,9 +647,19 @@ body {
   padding: 0;
   background: #E7E5EB;
   border: 1px solid #C8C5D1;
-  border-left: none;
   width: calc(27/450 * 100%);
   height: 37px;
+  cursor: pointer;
+  transition: border-color .3s ease-in-out;
+}
+
+.modal__delete-button:hover {
+  border-color: #F06A4D;
+}
+
+.modal__delete-button:hover svg path{
+  transition: fill .3s ease-in-out;
+  fill: #F06A4D;
 }
 
 .modal__contact-input_full {
@@ -558,6 +700,30 @@ body {
   font-weight: 400;
   color: #333;
   text-align: center;
+}
+
+.tbody::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(/icons/loading1.gif) center center no-repeat;
+  background-color: white;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .5s ease-in-out;
+  z-index: 3;
+}
+
+.tbody._sending::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+._error {
+  border-bottom-color:#F06A4D;
 }
 
 @media (max-width: 940px) {

@@ -9,25 +9,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const fioBtn = document.querySelector('#fio-btn');
   const creationBtn = document.querySelector('#creation-time-btn');
   const changesBtn = document.querySelector('#changes-time-btn');
+  const tbody = document.querySelector('.tbody');
+  const headerInput = document.querySelector('.header__input');
   let currentClientId;
   let clientsArray;
+
 
   // Work with server
 
   async function getClientsFromServer() {
+    tbody.classList.add('_sending');
     const response = await fetch('http://localhost:3000/api/clients');
+    if (response.ok) tbody.classList.remove('_sending');
+    const result = await response.json();
+    return result;
+  }
+
+  async function getClientFromServerById(id) {
+    const response = await fetch(`http://localhost:3000/api/clients/${id}`);
     const result = await response.json();
     return result;
   }
 
   async function postClientToServer(client) {
-    await fetch('http://localhost:3000/api/clients', {
+    const response = await fetch('http://localhost:3000/api/clients', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
       },
       body: JSON.stringify(client)
     });
+    return response;
   }
 
   function createClient() {
@@ -51,12 +63,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return client;
   }
 
-  addModal.querySelector('.save-button').addEventListener('click', () => {
-    const client = createClient();
-    postClientToServer(client);
-    addModal.classList.remove('modal_active');
-    clearClientTable();
-    fillClientsTableFromServer();
+  addModal.querySelector('.save-button').addEventListener('click', async () => {
+    const checkValidate = formValidate(addModal.querySelector('.modal__form'), addModal.querySelector('.save-button'));
+    if (checkValidate.fullNameError === 0 && checkValidate.contactsError === 0) {
+      const client = createClient();
+      addModal.querySelector('.modal__content').classList.add('_sending');
+      const response = await postClientToServer(client);
+      if (response.ok) {
+        addModal.querySelector('.modal__content').classList.remove('_sending');
+      }
+      addModal.classList.remove('modal_active');
+      clearClientTable();
+      await fillClientsTableFromServer();
+      addModal.querySelector('.modal__form').reset();
+      addModal.querySelectorAll('.contact-wrapper').forEach(el => el.remove());
+      // window.location.assign(window.location.origin);
+    }
   })
 
   function clearClientTable() {
@@ -86,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tdCreateTime = document.createElement('td');
       tdCreateTime.classList.add('content__td');
       const creationDate = new Date(client.createdAt).getDate();
-      const creationMonth = new Date(client.createdAt).getMonth();
+      const creationMonth = new Date(client.createdAt).getMonth() + 1;
       const creationYear = new Date(client.createdAt).getFullYear();
       tdCreateTime.textContent = `${creationDate}.${creationMonth}.${creationYear}`;
       const createTime = document.createElement('span');
@@ -103,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const tdUpdateTime = document.createElement('td');
       tdUpdateTime.classList.add('content__td');
       const updateDate = new Date(client.updatedAt).getDate();
-      const updateMonth = new Date(client.updatedAt).getMonth();
+      const updateMonth = new Date(client.updatedAt).getMonth() + 1;
       const updateYear = new Date(client.updatedAt).getFullYear();
       tdUpdateTime.textContent = `${updateDate}.${updateMonth}.${updateYear}`;
       const updateTime = document.createElement('span');
@@ -165,8 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let item of arrContacts) {
           editModal.querySelector('.modal__add-contact').before(createContactInput(item.type, item.value));
         }
-        console.log(arrContacts);
-      })
+
+        const url = new URL(window.location.origin);
+        window.location.assign(url + '#' + currentClientId);
+      });
       buttonEdit.prepend(svgEdit);
       tdEdit.append(buttonEdit);
 
@@ -198,43 +222,45 @@ document.addEventListener('DOMContentLoaded', () => {
       },
     });
     clearClientTable();
-    fillClientsTableFromServer();
-    deleteModal.classList.remove('modal_active');
+    await fillClientsTableFromServer();
+    modal.forEach(el => el.classList.remove('modal_active'));
+    // window.location.assign(window.location.origin);
   })
 
   editModal.querySelector('.save-button').addEventListener('click', async () => {
-    const arrModalInputs = document.querySelectorAll('.modal__input');
+    const arrModalInputs = editModal.querySelectorAll('.modal__input');
     const contactsArray = [];
 
-    document.querySelectorAll('.contact-wrapper').forEach(el => {
-      const contact = {
-        type: el.querySelector('.modal__select').value,
-        value: el.querySelector('.modal__contact-input').value,
-      }
-      contactsArray.push(contact);
-    })
-
-    await fetch(`http://localhost:3000/api/clients/${currentClientId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        name: arrModalInputs[1].value,
-        surname: arrModalInputs[0].value,
-        lastName: arrModalInputs[2].value,
-        contacts: contactsArray
+    const checkValidate = formValidate(editModal.querySelector('.modal__form'), editModal.querySelector('.save-button'));
+    if (checkValidate.fullNameError === 0 && checkValidate.contactsError === 0) {
+      editModal.querySelector('.modal__content').classList.add('_sending');
+      editModal.querySelectorAll('.contact-wrapper').forEach(el => {
+        const contact = {
+          type: el.querySelector('.modal__select').value,
+          value: el.querySelector('.modal__contact-input').value,
+        }
+        contactsArray.push(contact);
       })
-    });
-    clearClientTable();
-    fillClientsTableFromServer();
-    editModal.classList.remove('modal_active');
-  })
 
-  document.querySelector('#edit-cancel-button').addEventListener('click', () => {
-    modal.forEach(el => el.classList.remove('modal_active'));
-    editModal.classList.add('modal_active');
-  });
+      const response = await fetch(`http://localhost:3000/api/clients/${currentClientId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          name: arrModalInputs[1].value,
+          surname: arrModalInputs[0].value,
+          lastName: arrModalInputs[2].value,
+          contacts: contactsArray
+        })
+      });
+      if (response.ok) editModal.querySelector('.modal__content').classList.remove('_sending');
+      clearClientTable();
+      await fillClientsTableFromServer();
+      editModal.classList.remove('modal_active');
+      // window.location.assign(window.location.origin);
+    }
+  })
 
   document.querySelector('.button-client').addEventListener('click', () => {
     document.querySelector('.modal-add').classList.add('modal_active');
@@ -252,13 +278,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.forEach(el => el.classList.remove('modal_active'));
   }));
 
-  document.querySelectorAll('.delete-button').forEach(el => el.addEventListener('click', () => {
-    modal.forEach(el => el.classList.remove('modal_active'));
-    document.querySelector('#edit-delete-modal').classList.add('modal_active');
-  }));
-
-  document.querySelectorAll('.modal').forEach(el => el.addEventListener('click', (item) => {
-    item.target.classList.remove('modal_active');
+  document.querySelectorAll('.modal').forEach(el => el.addEventListener('mousedown', (item) => {
+    if (item.target.classList.contains('modal_active')) {
+      item.target.classList.remove('modal_active');
+      // window.location.assign(window.location.origin);
+    }
   }));
 
   document.querySelectorAll('.modal__add-contact').forEach(el => el.addEventListener('click', (event) => {
@@ -276,13 +300,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const optName = ['Телефон', 'Доп. телефон', 'Email', 'Vk', 'Facebook'];
     for (let item of optName) {
       const opt = document.createElement('option');
+      opt.addEventListener
       opt.textContent = item;
       opt.value = item;
       contactSelect.append(opt);
     }
-    if (contactType !== '') {
-      contactSelect.value = contactType;
-    }
+
+    contactSelect.addEventListener('change', () => {
+      contactTypeChecker(contactSelect);
+    })
     divContact.append(contactSelect);
 
     const contactInput = document.createElement('input');
@@ -291,7 +317,13 @@ document.addEventListener('DOMContentLoaded', () => {
       contactInput.value = contactValue;
     }
     contactInput.classList.add('modal__contact-input', 'modal__contact-input_full');
+    contactInput.addEventListener('input', () => {
+      if (contactInput.classList.contains('_error')) {
+        contactInput.classList.remove('_error');
+      }
+    });
     divContact.append(contactInput);
+
 
     const deleteButton = document.createElement('button');
     deleteButton.addEventListener('click', (event) => {
@@ -302,6 +334,14 @@ document.addEventListener('DOMContentLoaded', () => {
     svgDelete.innerHTML = '<svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"> <path d="M8 2C4.682 2 2 4.682 2 8C2 11.318 4.682 14 8 14C11.318 14 14 11.318 14 8C14 4.682 11.318 2 8 2ZM8 12.8C5.354 12.8 3.2 10.646 3.2 8C3.2 5.354 5.354 3.2 8 3.2C10.646 3.2 12.8 5.354 12.8 8C12.8 10.646 10.646 12.8 8 12.8ZM10.154 5L8 7.154L5.846 5L5 5.846L7.154 8L5 10.154L5.846 11L8 8.846L10.154 11L11 10.154L8.846 8L11 5.846L10.154 5Z" fill="#B0B0B0" /> </svg>'
     deleteButton.append(svgDelete);
     divContact.append(deleteButton);
+
+    if (contactType !== '') {
+      contactSelect.value = contactType;
+      contactTypeChecker(contactSelect);
+    } else {
+      contactSelect.value = 'Телефон';
+      contactSelect.parentNode.querySelector('.modal__contact-input').type = 'tel';
+    }
 
     return divContact;
   }
@@ -384,18 +424,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //Поиск
 
-  document.querySelector('.header__input').addEventListener('input', debounce(async () => {
-    await fillClientsTableFromServer();
-    clearClientTable();
-    clientsArray = clientsArray.filter((el) => {
+  headerInput.addEventListener('input', debounce(async () => {
+    // await fillClientsTableFromServer();
+    // clearClientTable();
+    document.querySelectorAll('.header__search-results-item').forEach(el => el.remove());
+    const searchResults = document.querySelector('.header__search-results');
+    const clientArray = clientsArray.filter((el) => {
       const fio = `${el.surname} ${el.name} ${el.lastName}`;
-      if (fio.toLowerCase().includes(document.querySelector('.header__input').value.toLowerCase().trim())) {
+      if (fio.toLowerCase().includes(headerInput.value.toLowerCase().trim())) {
         return el;
       }
     });
-    fillClientsTableFromArray(clientsArray);
+    let iteration = 0;
+    clientArray.forEach(el => {
+      if (iteration < 8) {
+        const resultItem = document.createElement('li');
+        resultItem.classList.add('header__search-results-item');
+        const resultBtn = document.createElement('button');
+        resultBtn.classList.add('header__search-results-btn');
+        resultBtn.textContent = `${el.surname} ${el.name} ${el.lastName}`;
+        resultBtn.addEventListener('click', () => {
+          document.querySelectorAll('.td-id').forEach(element => {
+            if (element.textContent === el.id) {
+              element.scrollIntoView({ block: "center", behavior: "smooth" });
+              const elArr = element.closest('.content__tr').querySelectorAll('.content__td');
+              elArr.forEach(el => el.style.backgroundColor = '#dddddd');
+              setTimeout(() => {
+                element.closest('.content__tr').querySelectorAll('.content__td').forEach(el => el.style.backgroundColor = '#fff');
+              }, 1200)
+              searchResults.classList.remove('header__search-results_active');
+            }
+          })
+        });
+        resultItem.append(resultBtn);
+        searchResults.append(resultItem);
+      }
+      iteration += 1;
+    })
+    if (clientArray.length > 0 && headerInput.value.trim() != '') {
+      searchResults.classList.add('header__search-results_active');
+    } else {
+      searchResults.classList.remove('header__search-results_active');
+    }
+    // fillClientsTableFromArray(clientsArray);
   }, 300));
 
+  headerInput.addEventListener('click', () => {
+    if (headerInput.value.trim() != '') {
+      const searchResultList = document.querySelector('.header__search-results');
+      searchResultList.classList.add('header__search-results_active');
+    }
+  })
 
   function debounce(func, ms) {
     let timeout;
@@ -405,5 +484,188 @@ document.addEventListener('DOMContentLoaded', () => {
       timeout = setTimeout(fnCall, ms)
     }
   };
+
+  //Валидация
+
+  function formValidate(form, btn) {
+    btn.parentNode.querySelectorAll('.error-message').forEach(el => el.remove());
+    let error = 0;
+    let contactError = 0;
+    const formReq = form.querySelectorAll('._req');
+
+    for (let index = 0; index < formReq.length; index++) {
+      const input = formReq[index];
+      formRemoveError(input);
+
+      if (input.value.trim() === '') {
+        if (input.classList.contains('_name')) {
+          formAddError(input);
+          btn.before(createErrorMessage('Заполните поле "Имя"'));
+          error++;
+        } else if (input.classList.contains('_surname')) {
+          formAddError(input);
+          btn.before(createErrorMessage('Заполните поле "Фамилия"'));
+          error++;
+        }
+      }
+    }
+
+    const contacts = form.parentNode.parentNode.querySelectorAll('.modal__contact-input');
+    const numbers = '0123456789';
+    for (let contact of contacts) {
+      if (contact.value.trim() === '') {
+        formAddError(contact);
+        contactError++;
+      }
+
+      switch (contact.type) {
+        case 'tel':
+          for (let num of contact.value) {
+            if (!numbers.includes(num)) {
+              formAddError(contact);
+              contactError++;
+              break;
+            }
+          }
+          break;
+
+        case 'email':
+          if (!contact.value.includes('@') || !contact.value.includes('.')) {
+            formAddError(contact);
+            contactError++;
+            break;
+          }
+          break;
+
+        case 'text':
+          const select = contact.parentNode.querySelector('.modal__select').value;
+          if (select === 'Vk') {
+            if (!contact.value.includes('vk.com/')) {
+              formAddError(contact);
+              contactError++;
+              break;
+            }
+          }
+          else { // === Facebook
+            if (!contact.value.includes('facebook.com/')) {
+              formAddError(contact);
+              contactError++;
+              break;
+            }
+          }
+          break;
+      }
+    }
+    if (contactError > 0) {
+      btn.before(createErrorMessage('Заполните все контакты корректно'));
+    }
+
+    const validationResult = {
+      fullNameError: error,
+      contactsError: contactError
+    }
+
+
+    return validationResult;
+  }
+
+  function formAddError(input) {
+    input.classList.add('_error');
+  }
+
+  function formRemoveError(input) {
+    input.classList.remove('_error');
+  }
+
+  function createErrorMessage(text) {
+    const span = document.createElement('span');
+    span.classList.add('error-message');
+    span.textContent = text;
+    return span;
+  }
+
+  document.querySelectorAll('.modal__input').forEach(el => el.addEventListener('input', () => {
+    if (el.classList.contains('_error')) {
+      el.classList.remove('_error');
+    }
+  }));
+
+  function contactTypeChecker(select) {
+    const numbers = '0123456789';
+    const curInput = select.parentNode.querySelector('.modal__contact-input');
+    switch (select.value) {
+      case 'Телефон':
+      case 'Доп. Телефон':
+        curInput.type = 'tel';
+        break;
+      case 'Email':
+        curInput.type = 'email';
+        break;
+      case 'Vk':
+        curInput.type = 'text';
+        curInput.value = 'vk.com/';
+        break;
+      case 'Facebook':
+        curInput.type = 'text';
+        curInput.value = 'facebook.com/';
+        break;
+    }
+  }
+
+  window.addEventListener("load", async () => {
+    const hash = window.location.hash;
+    if (hash != '') {
+      editModal.querySelector('.modal__content').classList.add('_sending');
+      const client = await getClientFromServerById(hash.slice(1));
+      if (client.message != 'Client Not Found') editModal.querySelector('.modal__content').classList.remove('_sending');
+
+      currentClientId = client.id;
+      editModal.classList.add('modal_active');
+      editModal.querySelector('.modal__span').textContent = `ID: ${client.id}`;
+
+      const arrEditInputs = editModal.querySelectorAll('.modal__input');
+      arrEditInputs[0].value = client.surname;
+      arrEditInputs[1].value = client.name;
+      arrEditInputs[2].value = client.lastName;
+
+      const arrContacts = client.contacts;
+      for (let item of arrContacts) {
+        editModal.querySelector('.modal__add-contact').before(createContactInput(item.type, item.value));
+      }
+
+    }
+  });
+
+  window.addEventListener('click', (el) => {
+    const searchResultList = document.querySelector('.header__search-results_active');
+    if (el.target.closest('.header__search-results_active') === null && searchResultList != null && el.target != headerInput) {
+      searchResultList.classList.remove('header__search-results_active');
+    }
+  })
+
+  let curResultBtn = null;
+  window.addEventListener('keydown', (el) => {
+    if (document.querySelector('.header__search-results').classList.contains('header__search-results_active')) {
+      const resultBtnArr = document.querySelectorAll('.header__search-results-btn');
+      if (el.key === 'ArrowDown') {
+        if (curResultBtn === null || curResultBtn + 1 >= resultBtnArr.length) {
+          curResultBtn = 0;
+        } else {
+          curResultBtn++;
+        }
+        resultBtnArr[curResultBtn].focus();
+      } else if (el.key === 'ArrowUp') {
+        if (curResultBtn === null || curResultBtn - 1 < 0) {
+          curResultBtn = resultBtnArr.length - 1;
+        } else {
+          curResultBtn--;
+        }
+        resultBtnArr[curResultBtn].focus();
+      }
+    }
+  })
+
+
+
 
 })
