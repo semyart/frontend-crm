@@ -19,20 +19,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function getClientsFromServer() {
     tbody.classList.add('_sending');
-    const response = await fetch('http://localhost:3000/api/clients');
+    const response = await fetch('https://aqueous-cliffs-54875.herokuapp.com/api/clients');
     if (response.ok) tbody.classList.remove('_sending');
     const result = await response.json();
     return result;
   }
 
   async function getClientFromServerById(id) {
-    const response = await fetch(`http://localhost:3000/api/clients/${id}`);
+    const response = await fetch(`https://aqueous-cliffs-54875.herokuapp.com/api/clients/${id}`);
     const result = await response.json();
     return result;
   }
 
   async function postClientToServer(client) {
-    const response = await fetch('http://localhost:3000/api/clients', {
+    const response = await fetch('https://aqueous-cliffs-54875.herokuapp.com/api/clients', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -188,8 +188,8 @@ document.addEventListener('DOMContentLoaded', () => {
           editModal.querySelector('.modal__add-contact').before(createContactInput(item.type, item.value));
         }
 
-        const url = new URL(window.location.origin);
-        window.location.assign(url + '#' + currentClientId);
+        // const url = new URL(window.location.origin);
+        // window.location.assign(url + '#' + currentClientId);
       });
       buttonEdit.prepend(svgEdit);
       tdEdit.append(buttonEdit);
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fillClientsTableFromServer();
 
   deleteModal.querySelector('.save-button').addEventListener('click', async () => {
-    await fetch(`http://localhost:3000/api/clients/${currentClientId}`, {
+    await fetch(`https://aqueous-cliffs-54875.herokuapp.com/api/clients/${currentClientId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contactsArray.push(contact);
       })
 
-      const response = await fetch(`http://localhost:3000/api/clients/${currentClientId}`, {
+      const response = await fetch(`https://aqueous-cliffs-54875.herokuapp.com/api/clients/${currentClientId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
